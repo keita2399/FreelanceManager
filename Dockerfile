@@ -22,7 +22,9 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
         /etc/apache2/sites-available/*.conf && \
     sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
         /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf && \
-    a2enmod rewrite
+    a2enmod rewrite && \
+    a2dismod mpm_event mpm_worker 2>/dev/null || true && \
+    a2enmod mpm_prefork
 
 WORKDIR /var/www/html
 
